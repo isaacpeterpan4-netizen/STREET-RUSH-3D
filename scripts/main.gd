@@ -8,6 +8,8 @@ func _ready():
     _create_city()
     _create_player()
     _create_vehicle()
+    _create_traffic()
+    _create_pedestrians()
     print("STREET RUSH 3D: CITY INITIALIZED")
 
 func _create_environment():
@@ -156,3 +158,58 @@ func _create_vehicle():
     vehicle.set_script(load("res://scripts/vehicle.gd"))
     vehicle.position = Vector3(0, 0.05, 8)
     add_child(vehicle)
+
+
+func _create_traffic():
+    var traffic_data = [
+        [Vector3(-75, 0.05, -3.5), Vector3.RIGHT, 1.0, 9.0, Color(0.8, 0.08, 0.05)],
+        [Vector3(-25, 0.05, -3.5), Vector3.RIGHT, 1.0, 11.0, Color(0.1, 0.35, 0.8)],
+        [Vector3(75, 0.05, 3.5), Vector3.RIGHT, -1.0, 8.0, Color(0.9, 0.75, 0.08)],
+        [Vector3(25, 0.05, 3.5), Vector3.RIGHT, -1.0, 10.0, Color(0.1, 0.65, 0.35)],
+        [Vector3(-3.5, 0.05, -75), Vector3.FORWARD, -1.0, 9.0, Color(0.65, 0.2, 0.75)],
+        [Vector3(3.5, 0.05, 75), Vector3.FORWARD, 1.0, 10.0, Color(0.8, 0.8, 0.8)]
+    ]
+
+    for data in traffic_data:
+        var car = CharacterBody3D.new()
+        car.name = "TrafficCar"
+        car.set_script(load("res://scripts/traffic.gd"))
+        car.position = data[0]
+        car.travel_axis = data[1]
+        car.travel_direction = data[2]
+        car.driving_speed = data[3]
+        car.paint_color = data[4]
+        add_child(car)
+
+func _create_pedestrians():
+    var pedestrian_data = [
+        [Vector3(-85, 0.05, 7.5), Vector3.RIGHT],
+        [Vector3(-45, 0.05, -7.5), Vector3.RIGHT],
+        [Vector3(35, 0.05, 7.5), Vector3.RIGHT],
+        [Vector3(85, 0.05, -7.5), Vector3.RIGHT],
+        [Vector3(7.5, 0.05, -85), Vector3.FORWARD],
+        [Vector3(-7.5, 0.05, -40), Vector3.FORWARD],
+        [Vector3(7.5, 0.05, 40), Vector3.FORWARD],
+        [Vector3(-7.5, 0.05, 85), Vector3.FORWARD]
+    ]
+
+    var clothing = [
+        Color(0.8, 0.25, 0.12),
+        Color(0.12, 0.3, 0.8),
+        Color(0.1, 0.55, 0.3),
+        Color(0.8, 0.65, 0.15),
+        Color(0.45, 0.2, 0.65),
+        Color(0.75, 0.75, 0.75),
+        Color(0.3, 0.25, 0.18),
+        Color(0.85, 0.4, 0.55)
+    ]
+
+    for i in range(pedestrian_data.size()):
+        var person = CharacterBody3D.new()
+        person.name = "Pedestrian_%02d" % i
+        person.set_script(load("res://scripts/pedestrian.gd"))
+        person.position = pedestrian_data[i][0]
+        person.travel_axis = pedestrian_data[i][1]
+        person.travel_direction = -1.0 if i % 2 == 0 else 1.0
+        person.clothing_color = clothing[i]
+        add_child(person)
