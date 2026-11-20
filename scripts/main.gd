@@ -7,6 +7,7 @@ func _ready():
     _create_environment()
     _create_city()
     _create_player()
+    _create_vehicle()
     print("STREET RUSH 3D: CITY INITIALIZED")
 
 func _create_environment():
@@ -147,3 +148,11 @@ func _create_player():
     player.set_script(load("res://scripts/player.gd"))
     player.position = Vector3(0, 0.1, 0)
     add_child(player)
+
+
+func _create_vehicle():
+    var vehicle = CharacterBody3D.new()
+    vehicle.name = "PlayerVehicle"
+    vehicle.set_script(load("res://scripts/vehicle.gd"))
+    vehicle.position = Vector3(0, 0.05, 8)
+    add_child(vehicle)
