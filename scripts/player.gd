@@ -42,10 +42,10 @@ func _create_camera():
 
     camera = Camera3D.new()
     camera.position = Vector3(0, 2.3, 6.5)
-    camera.look_at(Vector3(0, 1.2, 0), Vector3.UP)
     camera.current = true
     camera.fov = 75
     camera_pivot.add_child(camera)
+    camera.look_at(Vector3(0, 1.2, 0), Vector3.UP)
 
 func _create_hud():
     var canvas = CanvasLayer.new()
